@@ -43,7 +43,8 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-width: 350px;
+    width: 500px;
+    height:450px;
     padding: 20px;
     border-radius: 20px;
     position: relative;
