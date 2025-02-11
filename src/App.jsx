@@ -1,14 +1,13 @@
 
 import './App.css'
+import RegisterPage from './pages/registerpage/RegisterPage'
 
 function App() {
 
 
   return (
     <>
-      <h1 class="text-3xl font-bold underline text-center text-yellow-300 bg-amber-600">
-    Hello world!
-  </h1>
+     <RegisterPage/>
     </>
   )
 }
