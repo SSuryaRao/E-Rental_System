@@ -28,6 +28,9 @@ const Navbar = () => {
           <Link to="/register" className="text-gray-700 hover:text-blue-600">
             Register
           </Link>
+          <Link to="/login" className="text-gray-700 hover:text-blue-600">
+            Login
+          </Link>
         </div>
 
         <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
