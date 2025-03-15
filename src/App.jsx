@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Import routi
 import HomePage from './pages/homepage/HomePage'; // Import HomePage
 import AboutPage from './pages/aboutpage/AboutPage'; // Import AboutPage
 import ProductPage from './pages/productspage/ProductPage'; // Import ProductsPage
-
+import RegisterPage from './pages/registerpage/RegisterPage';
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
             <Route path="/home" element={<HomePage />} /> {/* Route for the Home page */}
             <Route path="/about" element={<AboutPage />} /> {/* Route for the About page */}
             <Route path="/products" element={<ProductPage />} /> {/* Route for the Products page */}
+            <Route path="/register" element={<RegisterPage />} /> {/* Route for the Register page */}
             {/* Add more routes here for other pages */}
           </Routes>
         </div>
