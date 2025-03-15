@@ -1,309 +1,150 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import { Link } from "react-router-dom"; // Assuming you are using React Router for navigation
 
 function RegisterPage() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordMatchError, setPasswordMatchError] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordMatchError, setPasswordMatchError] = useState("");
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    if (password !== e.target.value) {
-      setPasswordMatchError("Passwords do not match");
-    } else {
-      setPasswordMatchError("");
-    }
-  };
+    const handleConfirmPasswordChange = (e) => {
+        setConfirmPassword(e.target.value);
+        if (password !== e.target.value) {
+            setPasswordMatchError("Passwords do not match");
+        } else {
+            setPasswordMatchError("");
+        }
+    };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (password !== confirmPassword) {
-      setPasswordMatchError("Passwords do not match");
-      return;
-    }
-    // In a real application, you would handle form submission here
-    console.log("Form submitted:", { firstName, lastName, email, password });
-    // Reset form fields after submission (optional)
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setPasswordMatchError("");
-  };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (password !== confirmPassword) {
+            setPasswordMatchError("Passwords do not match");
+            return;
+        }
+        // In a real application, you would handle form submission here
+        console.log("Form submitted:", { firstName, lastName, email, password });
+        // Reset form fields after submission (optional)
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordMatchError("");
+    };
 
-  return (
-    <StyledWrapper>
-      <form className="form" onSubmit={handleSubmit}>
-        <p className="title">Register</p>
-        <p className="message">Signup now and get full access to our app.</p>
-        <div className="flex">
-          <label>
-            <input
-              className="input"
-              type="text"
-              placeholder=""
-              required
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <span>Firstname</span>
-          </label>
-          <label>
-            <input
-              className="input"
-              type="text"
-              placeholder=""
-              required
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-            <span>Lastname</span>
-          </label>
+    return (
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div
+                style={{ animation: "slideInFromLeft 1s ease-out" }}
+                className="max-w-md bg-gray-800 rounded-xl shadow-2xl overflow-hidden p-8 space-y-6 w-full">
+                <h2
+                    style={{ animation: "appear 1.5s ease-out" }}
+                    className="text-center text-3xl font-extrabold text-white">
+                    Create Account
+                </h2>
+                <p style={{ animation: "appear 2.5s ease-out" }} className="text-center text-gray-400">
+                    Sign up to join
+                </p>
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="relative">
+                            <input
+                                placeholder="First name"
+                                className="peer h-10 w-full border rounded-md border-gray-700 text-white bg-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500"
+                                required
+                                type="text"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                id="firstName"
+                            />
+                            <label
+                                className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-5.5 peer-focus:text-blue-500 peer-focus:text-sm"
+                                htmlFor="firstName">
+                                First name
+                            </label>
+                        </div>
+                        <div className="relative">
+                            <input
+                                placeholder="Last name"
+                                className="peer h-10 w-full border rounded-md border-gray-700 text-white bg-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500"
+                                required
+                                type="text"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                id="lastName"
+                            />
+                            <label
+                                className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-5.5 peer-focus:text-blue-500 peer-focus:text-sm"
+                                htmlFor="lastName">
+                                Last name
+                            </label>
+                        </div>
+                    </div>
+                    <div className="relative">
+                        <input
+                            placeholder="your.email@example.com"
+                            className="peer h-10 w-full border rounded-md border-gray-700 text-white bg-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500"
+                            required
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            id="email"
+                        />
+                        <label
+                            className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-5.5 peer-focus:text-blue-500 peer-focus:text-sm"
+                            htmlFor="email">
+                            Email address
+                        </label>
+                    </div>
+                    <div className="relative">
+                        <input
+                            placeholder="Password"
+                            className="peer h-10 w-full border rounded-md border-gray-700 text-white bg-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500"
+                            required
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            id="password"
+                        />
+                        <label
+                            className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-5.5 peer-focus:text-blue-500 peer-focus:text-sm"
+                            htmlFor="password">
+                            Password
+                        </label>
+                    </div>
+                    <div className="relative">
+                        <input
+                            placeholder="Confirm password"
+                            className="peer h-10 w-full border rounded-md border-gray-700 text-white bg-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500"
+                            required
+                            type="password"
+                            value={confirmPassword}
+                            onChange={handleConfirmPasswordChange}
+                            id="confirmPassword"
+                        />
+                        <label
+                            className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-5.5 peer-focus:text-blue-500 peer-focus:text-sm"
+                            htmlFor="confirmPassword">
+                            Confirm password
+                        </label>
+                    </div>
+                    {passwordMatchError && <p className="text-red-500 text-sm mt-1">{passwordMatchError}</p>}
+                    <button
+                        className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 rounded-md shadow-lg text-white font-semibold transition duration-200"
+                        type="submit">
+                        Create Account
+                    </button>
+                </form>
+                <div className="text-center text-gray-400 mt-3">
+                    Already have an account?
+                    <Link to="/login" className="text-blue-300 hover:underline ml-1">Sign in</Link>
+                </div>
+            </div>
         </div>
-        <label>
-          <input
-            className="input"
-            type="email"
-            placeholder=""
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <span>Email</span>
-        </label>
-        <label>
-          <input
-            className="input"
-            type="password"
-            placeholder=""
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <span>Password</span>
-        </label>
-        <label>
-          <input
-            className="input"
-            type="password"
-            placeholder=""
-            required
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
-          <span>Confirm password</span>
-        </label>
-        {passwordMatchError && <p className="error-message">{passwordMatchError}</p>}
-        <button className="submit" type="submit">Submit</button>
-        <p className="signin">
-          Already have an account? <a href="#">Sign in</a>
-        </p>
-      </form>
-    </StyledWrapper>
-  );
+    );
 }
-
-const StyledWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #0a0a0a; /* Added a background color for the wrapper to see the form better */
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 500px;
-    height: auto; /* Changed to auto to adjust height based on content */
-    padding: 20px;
-    border-radius: 20px;
-    position: relative;
-    background-color: #1a1a1a;
-    color: #fff;
-    border: 1px solid #333;
-  }
-
-  .title {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -1px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-    color: #00bfff;
-  }
-
-  .title::before,
-  .title::after {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    left: 0px;
-    background-color: #00bfff;
-  }
-
-  .title::after {
-    width: 18px;
-    height: 18px;
-    animation: pulse 1s linear infinite;
-  }
-
-  .message,
-  .signin,
-  .error-message {
-    font-size: 14.5px;
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .error-message {
-    color: #ff4d4d; /* Red color for error message */
-    margin-top: -5px; /* Adjust margin to be closer to the input */
-    margin-bottom: 5px;
-    font-size: 0.8em;
-  }
-
-
-  .signin {
-    text-align: center;
-  }
-
-  .signin a {
-    color: #00bfff;
-  }
-
-  .signin a:hover {
-    text-decoration: underline royalblue;
-  }
-
-  .flex {
-    display: flex;
-    width: 100%;
-    gap: 6px;
-  }
-
-  .form label {
-    position: relative;
-    display: block; /* Make label a block element to take full width */
-    margin-bottom: 5px; /* Add some margin between labels */
-  }
-
-  .form label .input {
-    background-color: #333;
-    color: #fff;
-    width: calc(100% - 12px); /* Adjust width to account for padding and border */
-    padding: 20px 5px 5px 10px;
-    outline: 0;
-    border: 1px solid rgba(105, 105, 105, 0.397);
-    border-radius: 10px;
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-  }
-
-  .form label .input + span {
-    color: rgba(255, 255, 255, 0.5);
-    position: absolute;
-    left: 10px;
-    top: 0px;
-    font-size: 0.9em;
-    cursor: text;
-    transition: 0.3s ease;
-  }
-
-  .form label .input:placeholder-shown + span {
-    top: 12.5px;
-    font-size: 0.9em;
-  }
-
-  .form label .input:focus + span,
-  .form label .input:valid + span {
-    color: #00bfff;
-    top: 0px;
-    font-size: 0.7em;
-    font-weight: 600;
-  }
-
-  .input {
-    font-size: medium;
-  }
-
-  .submit {
-    border: none;
-    outline: none;
-    padding: 10px;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 16px;
-    transform: 0.3s ease;
-    background-color: #00bfff;
-    cursor: pointer; /* Add cursor pointer for better UX */
-  }
-
-  .submit:hover {
-    background-color: #00bfff96;
-  }
-
-  @keyframes pulse {
-    from {
-      transform: scale(0.9);
-      opacity: 1;
-    }
-    to {
-      transform: scale(1.8);
-      opacity: 0;
-    }
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .form {
-      width: 90%; /* Form takes up more width on smaller screens */
-      max-width: 500px; /* But doesn't exceed the original width */
-      padding: 15px;
-    }
-
-    .flex {
-      flex-direction: column; /* Stack firstname and lastname on smaller screens */
-      gap: 10px;
-    }
-
-    .title {
-      font-size: 24px; /* Slightly smaller title on smaller screens */
-      padding-left: 25px;
-    }
-
-    .title::before,
-    .title::after {
-      height: 14px;
-      width: 14px;
-    }
-
-    .title::after {
-      width: 16px;
-      height: 16px;
-    }
-  }
-
-  @media (max-width: 576px) {
-    .form {
-      width: 95%; /* Even wider on very small screens */
-      padding: 10px;
-    }
-    .message,
-    .signin {
-      font-size: 14px; /* Slightly smaller message/signin text */
-    }
-
-    .submit {
-      font-size: 15px; /* Slightly smaller submit button text */
-    }
-  }
-`;
 
 export default RegisterPage;
