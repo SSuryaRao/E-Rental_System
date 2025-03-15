@@ -1,35 +1,46 @@
 import React from 'react';
 import './App.css';
 import LoginPage from './pages/loginpage/LoginPage';
-import Navbar from './components/Navbar'; // Import Navbar
-import Footer from './components/Footer'; // Import Footer
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Import routing components
-import HomePage from './pages/homepage/HomePage'; // Import HomePage
-import AboutPage from './pages/aboutpage/AboutPage'; // Import AboutPage
-import ProductPage from './pages/productspage/ProductPage'; // Import ProductsPage
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import HomePage from './pages/homepage/HomePage';
+import AboutPage from './pages/aboutpage/AboutPage';
+import ProductPage from './pages/productspage/ProductPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
+
+// A new component that uses the useLocation hook
+function AppContent() {
+  const location = useLocation();
+  
+  // Define the paths where you don't want to show the Footer
+  const hideFooterPaths = ['/login',"/register"];
+  
+  return (
+    <>
+      <Navbar /> {/* Navbar always shows at the top */}
+      
+      <div style={{ paddingBottom: '70px' }}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/products" element={<ProductPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Routes>
+      </div>
+
+      {/* Conditionally render the Footer only if current path is not in hideFooterPaths */}
+      {!hideFooterPaths.includes(location.pathname) && <Footer />}
+    </>
+  );
+}
 
 function App() {
   return (
-    <BrowserRouter> {/* Wrap your app with BrowserRouter */}
-      <>
-        <Navbar /> {/* Include Navbar at the top */}
-
-        <div style={{ paddingBottom: '70px' }}> {/* Add padding to body to prevent content overlay by fixed footer */}
-          <Routes> {/* Define your routes */}
-            <Route path="/" element={<HomePage />} /> {/* Route for the Home page */}
-            <Route path="/login" element={<LoginPage />} /> {/* Route for the Login page */}
-            <Route path="/home" element={<HomePage />} /> {/* Route for the Home page */}
-            <Route path="/about" element={<AboutPage />} /> {/* Route for the About page */}
-            <Route path="/products" element={<ProductPage />} /> {/* Route for the Products page */}
-            <Route path="/register" element={<RegisterPage />} /> {/* Route for the Register page */}
-            {/* Add more routes here for other pages */}
-          </Routes>
-        </div>
-         {/* Add a div to position the footer at the bottom */}
-          <Footer />
-         {/* Include Footer at the bottom */}
-      </>
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
