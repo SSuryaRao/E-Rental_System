@@ -8,6 +8,8 @@ import HomePage from './pages/homepage/HomePage';
 import AboutPage from './pages/aboutpage/AboutPage';
 import ProductPage from './pages/productspage/ProductPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
+import MyContact from './pages/contact/contactpage';
+
 
 // A new component that uses the useLocation hook
 function AppContent() {
@@ -28,6 +30,7 @@ function AppContent() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/contact" element={<MyContact />} />
         </Routes>
       </div>
 
