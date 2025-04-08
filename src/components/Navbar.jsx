@@ -38,7 +38,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     console.log("Attempting to logout...");
-  
+    console.log("Access token from storage:", localStorage.getItem("accessToken"));
     const token = localStorage.getItem("accessToken");
   
     if (!token) {
@@ -63,7 +63,8 @@ const Navbar = () => {
   
       // Clear localStorage or relevant session data
       localStorage.removeItem("accessToken");
-      localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("isLoggedIn");
   
       // Redirect or update UI accordingly
       navigate("/login");

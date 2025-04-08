@@ -12,7 +12,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/user/login",
@@ -21,20 +21,21 @@ export default function LoginPage() {
           password,
         }
       );
-
+  
       console.log("Login successful:", response.data);
-      // In your login component after successful login
+  
+      const { accessToken, refreshToken } = response.data.message;
+  
+      // Store login status and tokens
       localStorage.setItem("isLoggedIn", "true");
-      // Store the auth token if your API returns one
-      if (response.data.message && response.data.message.token) {
-        localStorage.setItem("authToken", response.data.message.token);
-      }
-      // After successful login
-      localStorage.setItem('accessToken', response.data.token);
-
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+  
+      console.log("Access token set in storage:", accessToken);
+  
       setSuccessMessage("Login successful! Redirecting...");
       setError("");
-
+  
       // Redirect after 2 seconds
       setTimeout(() => {
         navigate("/");
@@ -45,6 +46,7 @@ export default function LoginPage() {
       setSuccessMessage("");
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
