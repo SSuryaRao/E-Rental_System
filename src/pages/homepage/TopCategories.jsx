@@ -10,4 +10,4 @@ function TopCategories() {
      );
 }
 
-export default TopCategories;
+export default TopCategories
