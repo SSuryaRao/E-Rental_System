@@ -37,50 +37,42 @@ const Navbar = () => {
   ];
 
   const handleLogout = async () => {
+    console.log("Attempting to logout...");
+  
+    const token = localStorage.getItem("accessToken");
+  
+    if (!token) {
+      console.log("No token found in localStorage.");
+      return;
+    }
+  
+    console.log("Access token from storage:", token ? "Present" : "Missing");
+  
     try {
-      console.log("Attempting to logout...");
-      // Get the access token - depends on how you're storing it
-      const accessToken = localStorage.getItem("accessToken");
-      console.log(
-        "Access token from storage:",
-        accessToken ? "Present" : "Not found"
-      );
-
-      // Include both cookie and Authorization header approaches
-      axios.defaults.withCredentials = true; // ✅ Set globally (optional)
-
-      await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/user/logout`,
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/user/logout",
         {},
         {
-          withCredentials: true, // ✅ Proper config option
           headers: {
-            Authorization: accessToken ? `Bearer ${accessToken}` : "",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
+  
       console.log("Logout API call successful");
-
-      // Client-side cleanup
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("accessToken"); // Also remove the token
-      setIsLoggedIn(false);
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-      console.error(
-        "Error details:",
-        error.response?.data || "No response data"
-      );
-
-      // Even if server logout fails, perform client-side logout
-      localStorage.removeItem("isLoggedIn");
+  
+      // Clear localStorage or relevant session data
       localStorage.removeItem("accessToken");
-      setIsLoggedIn(false);
+      localStorage.removeItem("isLoggedIn");
+  
+      // Redirect or update UI accordingly
       navigate("/login");
+    } catch (err) {
+      console.error("Logout failed:", err);
+      console.log("Error details:", err.response?.data || err.message);
     }
   };
+  
 
   return (
     <nav className="bg-gray-800 text-gray-300 shadow-md w-full sticky top-0 z-10">
