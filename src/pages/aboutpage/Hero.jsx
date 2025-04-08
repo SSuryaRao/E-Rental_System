@@ -9,8 +9,15 @@ const Hero = () => {
                         We're More Than Just a Company
                     </h2>
                     <p className="mt-4 text-lg text-gray-500">
-                        At [Your Company Name], we are driven by a passion for innovation and a commitment to our customers. We believe in [Your Core Value 1], [Your Core Value 2], and [Your Core Value 3].
-                    </p>
+  At <strong>E-Rental</strong>, we are driven by a passion for innovation and a commitment to empowering communities through smart sharing.
+  We believe in <strong>sustainability</strong>, <strong>accessibility</strong>, and <strong>trust</strong> — values that shape every rental experience on our platform.
+  <br /><br />
+  Whether you're renting out idle tools or borrowing essential items for your next big project, E-Rental makes it simple, secure, and affordable.
+  We’re building a future where everyone can get what they need — without owning everything — while strengthening local connections and reducing environmental impact.
+  <br /><br />
+  Join us in rethinking ownership and embracing a smarter way to share.
+</p>
+
                     <div className="mt-6">
                         <a
                             href="/our-values"
@@ -23,7 +30,7 @@ const Hero = () => {
                     <div className="aspect-w-5 aspect-h-3 sm:aspect-w-2 sm:aspect-h-1 md:aspect-w-3 md:aspect-h-2">
                         <img
                             className="object-cover shadow-lg rounded-md"
-                            src="/images/about-us-image.jpg"
+                            src="public/about-us-image.jpg"
                             alt="Our Team or Company Culture"
                         />
                     </div>
