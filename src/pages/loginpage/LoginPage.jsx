@@ -29,6 +29,8 @@ export default function LoginPage() {
       if (response.data.message && response.data.message.token) {
         localStorage.setItem("authToken", response.data.message.token);
       }
+      // After successful login
+      localStorage.setItem('accessToken', response.data.token);
 
       setSuccessMessage("Login successful! Redirecting...");
       setError("");

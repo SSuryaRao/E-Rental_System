@@ -22,7 +22,7 @@ const Navbar = () => {
         setIsLoggedIn(e.newValue === "true");
       }
     };
-    
+
     window.addEventListener("storage", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
@@ -41,22 +41,27 @@ const Navbar = () => {
       console.log("Attempting to logout...");
       // Get the access token - depends on how you're storing it
       const accessToken = localStorage.getItem("accessToken");
-      console.log("Access token from storage:", accessToken ? "Present" : "Not found");
-      
+      console.log(
+        "Access token from storage:",
+        accessToken ? "Present" : "Not found"
+      );
+
       // Include both cookie and Authorization header approaches
+      axios.defaults.withCredentials = true; // ✅ Set globally (optional)
+
       await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/user/logout`,
         {},
-        { 
-          withCredentials: true, // Sends cookies with the request
+        {
+          withCredentials: true, // ✅ Proper config option
           headers: {
-            Authorization: accessToken ? `Bearer ${accessToken}` : ""
-          }
+            Authorization: accessToken ? `Bearer ${accessToken}` : "",
+          },
         }
       );
-      
+
       console.log("Logout API call successful");
-      
+
       // Client-side cleanup
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("accessToken"); // Also remove the token
@@ -64,8 +69,11 @@ const Navbar = () => {
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
-      console.error("Error details:", error.response?.data || "No response data");
-      
+      console.error(
+        "Error details:",
+        error.response?.data || "No response data"
+      );
+
       // Even if server logout fails, perform client-side logout
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("accessToken");
