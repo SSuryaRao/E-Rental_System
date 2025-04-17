@@ -18,6 +18,8 @@ import RegisterPage from './pages/registerpage/RegisterPage';
 import MyContact from './pages/contact/contactpage';
 import ProductDetails from './pages/productspage/ProductDetails';
 
+import CartPage from './components/CartPage';
+
 import ScrollToTop from './components/ScrollToTop';
 import { ToastContainer } from 'react-toastify'; // ✅ Import this
 import 'react-toastify/dist/ReactToastify.css'; // ✅ Import styles
@@ -52,6 +54,7 @@ function AppContent() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/contact" element={<MyContact />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<CartPage />} />
         </Routes>
       </div>
 

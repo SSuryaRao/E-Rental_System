@@ -1,106 +1,112 @@
+// src/pages/cartpage/CartPage.jsx
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState([]);
-  const [error, setError] = useState("");
+  const [cartItems, setCartItems] = useState([]);   // always an array
   const [loading, setLoading] = useState(true);
-
-  const fetchCart = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("accessToken");
-
-      const response = await axios.get("http://localhost:8000/api/v1/cart/get-cart", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setCartItems(response.data.message);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching cart:", err);
-      setError("Failed to fetch cart data");
-      setLoading(false);
-    }
-  };
+  const [error, setError] = useState("");
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    fetchCart();
-  }, []);
-
-  const updateQuantity = (productId, delta) => {
-    const updatedItems = cartItems.map((item) => {
-      if (item.productId === productId) {
-        const newQuantity = item.quantity + delta;
-        return {
-          ...item,
-          quantity: newQuantity > 0 ? newQuantity : 1,
-        };
+    const fetchCart = async () => {
+      if (!token) {
+        setError("You must be logged in to view your cart.");
+        setLoading(false);
+        return;
       }
-      return item;
-    });
 
-    setCartItems(updatedItems);
-  };
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/cart/get-cart",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => {
-      return total + item.quantity * item.price;
-    }, 0);
-  };
+        // Your API returns { statusCode, data: [ ... ], message, success }
+        const data = response.data?.data;
 
-  if (loading) return <div className="text-white p-8">Loading...</div>;
-  if (error) return <div className="text-red-500 p-8">{error}</div>;
+        if (Array.isArray(data)) {
+          setCartItems(data);
+        } else {
+          console.error("Expected data array, got:", data);
+          setCartItems([]);
+        }
+      } catch (err) {
+        console.error("Error fetching cart:", err);
+        if (err.response?.status === 401) {
+          setError("Session expired. Please log in again.");
+        } else {
+          setError("Failed to load cart items.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCart();
+  }, [token]);
+
+  const calculateTotal = () =>
+    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  if (loading) {
+    return (
+      <div className="p-8 text-center">
+        <p>Loading your cart…</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8 text-center text-red-500">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-gray-900 min-h-screen text-white py-12 px-6">
-      <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
+    <div className="min-h-screen p-6 bg-gray-50">
+      <h1 className="text-3xl font-bold mb-6">🛒 Your Cart</h1>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className="text-gray-600">Your cart is empty.</p>
       ) : (
-        <div className="space-y-6">
-          {cartItems.map((item) => (
-            <div
-              key={item.productId}
-              className="flex items-center gap-4 p-4 bg-gray-800 rounded-lg shadow"
-            >
-              <img
-                src={item.productImage}
-                alt={item.productName}
-                className="w-24 h-24 object-cover rounded"
-              />
-              <div className="flex-1">
-                <h2 className="text-xl font-semibold">{item.productName}</h2>
-                <p className="text-gray-400">₹{item.price}</p>
-                <div className="flex items-center mt-2">
-                  <button
-                    onClick={() => updateQuantity(item.productId, -1)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
-                  >
-                    -
-                  </button>
-                  <span className="px-4">{item.quantity}</span>
-                  <button
-                    onClick={() => updateQuantity(item.productId, 1)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded"
-                  >
-                    +
-                  </button>
+        <>
+          <div className="space-y-4">
+            {cartItems.map((item) => (
+              <div
+                key={item.productId}
+                className="flex items-center bg-white p-4 rounded shadow"
+              >
+                <img
+                  src={item.productImage}
+                  alt={item.productName}
+                  className="w-16 h-16 object-cover rounded mr-4"
+                />
+                <div className="flex-1">
+                  <h2 className="text-xl font-semibold">
+                    {item.productName}
+                  </h2>
+                  <p className="text-gray-600">₹{item.price}</p>
+                  <p className="text-gray-600">Quantity: {item.quantity}</p>
+                </div>
+                <div className="text-lg font-bold">
+                  ₹{item.price * item.quantity}
                 </div>
               </div>
-              <div className="text-lg font-semibold">
-                ₹{item.quantity * item.price}
-              </div>
-            </div>
-          ))}
-
-          <div className="mt-8 text-2xl font-bold">
-            Total: ₹{calculateTotal()}
+            ))}
           </div>
-        </div>
+
+          <div className="mt-8 text-right">
+            <span className="text-2xl font-bold">
+              Total: ₹{calculateTotal()}
+            </span>
+          </div>
+        </>
       )}
     </div>
   );
