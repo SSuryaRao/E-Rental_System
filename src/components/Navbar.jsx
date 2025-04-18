@@ -13,30 +13,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Update login status and fetch cart count when route changes
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
-    if (loggedIn) {
-      fetchCartCount();
-    } else {
-      setCartCount(0);
-    }
-  }, [location.pathname]);
-
-  // Listen for login status changes in other tabs
-  useEffect(() => {
-    const handleStorage = (e) => {
-      if (e.key === "isLoggedIn") {
-        const loggedIn = e.newValue === "true";
-        setIsLoggedIn(loggedIn);
-        if (loggedIn) fetchCartCount();
-        else setCartCount(0);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
+  // Clears all local session data and redirects to login
+  const clearSession = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+    setCartCount(0);
+    navigate("/login");
+  };
 
   // Fetch cart count from backend
   const fetchCartCount = async () => {
@@ -48,45 +33,66 @@ const Navbar = () => {
         "http://localhost:8000/api/v1/cart/get-cart",
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       const items = Array.isArray(res.data.data) ? res.data.data : [];
       const total = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
       setCartCount(total);
+      setError("");
     } catch (err) {
       console.error("Error fetching cart count:", err);
       if (err.response?.status === 401) {
-        setError("Session expired. Please log in again.");
-        // Optional: auto-logout here
+        setError("Session expired. Redirecting to login...");
+        clearSession();
       } else {
         setError("Failed to load cart.");
       }
     }
   };
 
+  // Update login status & cart count when route changes
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedIn);
+    if (loggedIn) fetchCartCount();
+    else setCartCount(0);
+  }, [location.pathname]);
+
+  // Listen for login status changes in other tabs
+  useEffect(() => {
+    const listener = (e) => {
+      if (e.key === "isLoggedIn") {
+        const loggedIn = e.newValue === "true";
+        setIsLoggedIn(loggedIn);
+        if (loggedIn) fetchCartCount();
+        else setCartCount(0);
+      }
+    };
+    window.addEventListener("storage", listener);
+    return () => window.removeEventListener("storage", listener);
+  }, []);
+
+  // Logout handler
   const handleLogout = async () => {
     const token = localStorage.getItem("accessToken");
-    if (!token) return;
-
-    try {
-      await axios.post(
-        "http://localhost:8000/api/v1/user/logout",
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("isLoggedIn");
-      setIsLoggedIn(false);
-      setCartCount(0);
-      navigate("/login");
-    } catch (err) {
-      console.error("Logout failed:", err);
+    if (token) {
+      try {
+        await axios.post(
+          "http://localhost:8000/api/v1/user/logout",
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      } catch (err) {
+        // If expired or invalid, we ignore and still clear
+        if (err.response?.status !== 401) {
+          console.error("Logout API error:", err);
+          return; // if another error, bail out so we don't clear session inadvertently
+        }
+      }
     }
+    // In all cases clear client session
+    clearSession();
   };
 
-  const handleCartClick = () => {
-    navigate("/cart");
-  };
+  const handleCartClick = () => navigate("/cart");
 
   const navLinks = [
     { to: "/home", label: "Home" },
@@ -107,17 +113,17 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex space-x-6 items-center">
-          {navLinks.map((link) => (
+          {navLinks.map(({ to, label }) => (
             <NavLink
-              key={link.to}
-              to={link.to}
+              key={to}
+              to={to}
               className={({ isActive }) =>
                 `py-2 px-3 rounded-md hover:bg-gray-700 transition ${
                   isActive ? "bg-teal-500 text-white font-semibold" : ""
                 }`
               }
             >
-              {link.label}
+              {label}
             </NavLink>
           ))}
 
@@ -163,7 +169,7 @@ const Navbar = () => {
         {/* Mobile Toggle */}
         <button
           className="md:hidden"
-          onClick={() => setIsOpen((open) => !open)}
+          onClick={() => setIsOpen((o) => !o)}
         >
           {isOpen ? (
             <X className="w-6 h-6 text-white" />
@@ -176,14 +182,14 @@ const Navbar = () => {
       {/* Mobile Nav */}
       {isOpen && (
         <div className="md:hidden bg-gray-700 flex flex-col space-y-3 px-4 py-4">
-          {navLinks.map((link) => (
+          {navLinks.map(({ to, label }) => (
             <NavLink
-              key={link.to}
-              to={link.to}
+              key={to}
+              to={to}
               className="py-2 px-3 rounded-md hover:bg-gray-600 text-white"
               onClick={() => setIsOpen(false)}
             >
-              {link.label}
+              {label}
             </NavLink>
           ))}
 
