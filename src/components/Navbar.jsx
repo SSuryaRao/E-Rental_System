@@ -30,7 +30,7 @@ const Navbar = () => {
 
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/v1/cart/get-cart",
+        `${import.meta.env.VITE_API_BASE_URL}/cart/get-cart`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const items = Array.isArray(res.data.data) ? res.data.data : [];
@@ -76,7 +76,7 @@ const Navbar = () => {
     if (token) {
       try {
         await axios.post(
-          "http://localhost:8000/api/v1/user/logout",
+          `${import.meta.env.VITE_API_BASE_URL}/user/logout`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );

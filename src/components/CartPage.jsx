@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
+import axiosInstance from "../api/axiosInstance";
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
@@ -19,10 +20,10 @@ export default function CartPage() {
         setLoading(false);
         return;
       }
-
+      
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/cart/get-cart",
+          `${import.meta.env.VITE_API_BASE_URL}/cart/get-cart`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
