@@ -1,6 +1,6 @@
 import React from 'react';
 import Hero from './Hero';
-import MoreAboutus from './MoreAboutus';
+
 
 function AboutPage() {
   return (
@@ -9,7 +9,7 @@ function AboutPage() {
       <Hero />
 
       {/* Optional smaller content */}
-      <MoreAboutus />
+     
 
       {/* Our Mission */}
       <section className="py-12 bg-white text-center px-6">
