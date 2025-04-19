@@ -17,6 +17,8 @@ import ProductPage from './pages/productspage/ProductPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import MyContact from './pages/contact/ContactPage';
 import ProductDetails from './pages/productspage/ProductDetails';
+import RegisterProduct from './components/RegisterProduct';
+import RegisterSeller from './components/RegisterSeller';
 
 import CartPage from './components/CartPage';
 
@@ -55,6 +57,8 @@ function AppContent() {
           <Route path="/contact" element={<MyContact />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/seller/register" element={<RegisterSeller />} />
+          <Route path="/product/register" element={<RegisterProduct />} />  
         </Routes>
       </div>
 

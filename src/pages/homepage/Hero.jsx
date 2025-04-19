@@ -110,10 +110,10 @@ function Hero() {
               Your all-in-one platform to rent tools, equipment, and unique items from your neighbors and local businesses.  Find what you need, save money, and support your community.
             </p>
             <div className="space-x-6" ref={buttonsRef}>
-              <Link to="/rentals" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg shadow-md transition-all duration-300 hover:scale-105">
+              <Link to="/products" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg shadow-md transition-all duration-300 hover:scale-105">
                 Explore Rentals
               </Link>
-              <Link to="/list-item" className="inline-block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-4 px-8 rounded-lg shadow-md transition-all duration-300 hover:scale-105">
+              <Link to="/product/register" className="inline-block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-4 px-8 rounded-lg shadow-md transition-all duration-300 hover:scale-105">
                 List Your Item
               </Link>
             </div>
