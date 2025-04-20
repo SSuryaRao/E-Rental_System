@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const CategoriesHero1 = () => {
-  const categories = ["Furniture", "TV", "Fridge", "Electronics"];
+  const categories = ["Furniture", "TV", "Fridge", "Electronics","Books","Games","Sports","Home"];
   const [allProducts, setAllProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(false);
