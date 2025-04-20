@@ -21,18 +21,18 @@ export default function RegisterProduct() {
     if (!token) {
       return navigate("/login");
     }
-  
+
     const checkSellerStatus = async () => {
       try {
         const res = await axios.get(`${BASE}/seller/seller-details`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-  
+
         console.log("Seller details response:", res.data);
-  
+
         // Check if seller exists based on '_id'
         const seller = res.data?.data;
-  
+
         // If there is no '_id', the seller is not registered
         if (!seller || !seller._id) {
           navigate("/seller/register");
@@ -42,7 +42,7 @@ export default function RegisterProduct() {
         navigate("/seller/register");
       }
     };
-  
+
     checkSellerStatus();
   }, [token, BASE, navigate]);
 
@@ -146,6 +146,9 @@ export default function RegisterProduct() {
             <option value="Games">Games</option>
             <option value="Home">Home</option>
             <option value="Sports">Sports</option>
+            <option value="TV">TV</option>
+            <option value="Fridge">Fridge</option>
+            <option value="Furniture">Furniture</option>
           </select>
         </div>
 
